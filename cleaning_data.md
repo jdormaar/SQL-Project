@@ -2,8 +2,6 @@
 
 ## What issues will you address by cleaning the data?
 
-Follow these points and draw parallel with your analysis, but don't
-go deep just little tweaks:
 https://towardsdatascience.com/the-ultimate-guide-to-data-cleaning-3969843991d4#b498
 
 - Consistent naming conventions for tables and columns
@@ -435,3 +433,5 @@ until them one might consider relating these 2 tables using a one or none to man
 4. https://www.tutorialspoint.com/sql/index.htm, **SQL Tutorial**, *LEARN SQL simply easy learning*, 2022 Tutorialspoint.com.
 
 5. https://www.w3schools.com/sql/default.asp, **SQL Syntax**, *W3schools*, 1999-2022 by Refsnes Data.
+
+6. https://towardsdatascience.com/the-ultimate-guide-to-data-cleaning-3969843991d4#b498, **The Ultimate Guide to Data Cleaning - when the data is spewing garbage**, *Towards Data Science*, Feb 28, 2019. Omar Elgabry.
