@@ -7,17 +7,20 @@ Which cities and countries have the highest level of transaction revenues on the
 
 ```sql
 -- Sum transaction levels by country
+
 SELECT
     country
-  , SUM (ROUND(total_transaction_revenue)) AS ttr
+  , SUM(ROUND(total_transaction_revenue)) AS ttr
 FROM sessions
 WHERE total_transaction_revenue IS NOT NULL
 GROUP BY country
-ORDER BY ttr DESC;
+ORDER BY ttr DESC
+LIMIT 5;
 ```
 
 ```sql
 -- Sum transaction levels by city
+
 SELECT
     city
   , country
@@ -26,11 +29,13 @@ FROM sessions
 WHERE total_transaction_revenue IS NOT NULL
 AND city IS NOT NULL
 GROUP BY city, country
-ORDER BY ttr DESC;
+ORDER BY ttr DESC
+LIMIT 5;
 ```
 ### Answer:
 
 Countries with highest level of transactions:
+
 | country       | total_transaction_revenue |
 | ------------- | ------------------------- |
 | United States | 13153                     |
@@ -48,21 +53,7 @@ Cities with the highest level of transactions:
 | Atlanta       | United States | 854.44                    |
 | Palo Alto     | United States | 608.00                    |
 | Tel Aviv-Yafo | Israel        | 602.00                    |
-| New York      | United States | 530.36                    |
-| Mountain View | United States | 483.36                    |
-| Los Angeles   | United States | 479.48                    |
-| Chicago       | United States | 449.52                    |
-| Sydney        | Australia     | 358.00                    |
-| Seattle       | United States | 358.00                    |
-| San Jose      | United States | 262.38                    |
-| Austin        | United States | 157.78                    |
-| Nashville     | United States | 157.00                    |
-| San Bruno     | United States | 103.77                    |
-| Toronto       | Canada        | 82.16                     |
-| New York      | Canada        | 67.99                     |
-| Houston       | United States | 38.98                     |
-| Columbus      | United States | 21.99                     |
-| Zurich        | Switzerland   | 16.99                     |
+
 ## Question 2
 What is the average number of products ordered from visitors in each city and country?
 
@@ -70,6 +61,7 @@ What is the average number of products ordered from visitors in each city and co
 
 ```sql
 -- Average number of products ordered by country
+
 SELECT
     country
   , ROUND(AVG(product_quantity)) AS country_quantity
@@ -81,6 +73,7 @@ ORDER BY country_quantity DESC;
 
 ```sql
 -- Average number of products ordered by city
+
 SELECT
     city
   , country
