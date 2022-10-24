@@ -287,5 +287,13 @@ More information is needed to understand the source and reasons for this much un
 
 until them one might consider relating these 2 tables using a one or none to many or none relationship cardinality.
 # References:
-1. https://www.postgresql.org/docs/15/index.html **PostgreSQL 15.0 Documentation**,
+1. https://www.postgresql.org/docs/15/index.html, **PostgreSQL 15.0 Documentation**,
 *The PostgreSQL Global Development Group*, 1996–2022 The PostgreSQL Global Development Group.
+
+2. https://learn.microsoft.com/en-us/sql/?view=sql-server-ver16, **Microsoft SQL documentation**, *Educational SQL resources* ,Microsoft 2022.
+
+3. https://www.techonthenet.com/sql/index.php, **SQL Tutorial**, *totn SQL*, 2003-2022 TechOnTheNet.com.
+
+4. https://www.tutorialspoint.com/sql/index.htm, **SQL Tutorial**, *LEARN SQL simply easy learning*, 2022 Tutorialspoint.com.
+
+5. https://www.w3schools.com/sql/default.asp, **SQL Syntax**, *W3schools*, 1999-2022 by Refsnes Data.
