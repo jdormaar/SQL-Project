@@ -1,18 +1,149 @@
 # Cleaning Data
 
-## "What issues will you address by cleaning the data?"
+## What issues will you address by cleaning the data?
 
-* 
+Follow these points and draw parallel with your analysis, but don't
+go deep just little tweaks:
+https://towardsdatascience.com/the-ultimate-guide-to-data-cleaning-3969843991d4#b498
 
-Queries:
-Below, provide the SQL queries you used to clean your data.
+- Consistent naming conventions for tables and columns
+- Identify irrelevant and duplicate data for removal
+- Type conversion for improperly data types
+- Syntax errors and typos
+- Find missing values that should b filled in to complete the dataset
+- Identify outliers for removal to prevent their interference during analysis
+- Handle missing data
+- Filter out data outliers
+- Fix dates and times
+- Merge and split columns
+- Reconcile table data by adding relationships
+- Validate data to ready it for data transformation and analysis
+- Perform transformations and analysis
 
-Repeated for each of the 5 tables to facilitate initial comparisons for beginning to to understand the data:
-## Cleaning the Database:
-In order to get started, I felt like I needed each table to have a unique id to set temporarily as the table's primary key, in order to facilitate the initial comparative observations. 
+## Queries
+
+Queries and description of process used to interrogate and clean the data.
+
+### Consistent Naming Conventions
+
+Renamed table columns for `all_sessions`, `analytics`, `products`, `sales_by_sku`, `sales_report` to use a common naming convention (snake_case) for tables to create readability between the separate words, see example.
 
 ```sql
---create unique primary key for each of the five tables
+-- Example of changing a column name to snake_case format
+
+ALTER TABLE all_sessions
+  RENAME fullVisitorId TO full_visitor_id;
+```
+
+### Remove Duplicate and Irrelevant Data
+
+```sql
+-- Investigation into the potentially irrelevant data within transaction columns
+
+SELECT
+    city
+  , country
+  , transaction_id
+  , transaction_revenue
+  , total_transaction_revenue
+  , transactions
+  , COUNT (city) AS counts
+FROM all_sessions
+GROUP BY 1, 2, 3, 4, 5, 6
+ORDER BY counts DESC NULLS LAST;
+```
+
+```sql
+-- Verify transaction_revenue is irrelevant
+
+SELECT total_transaction_revenue, transaction_revenue, COUNT(transaction_revenue)
+FROM all_sessions
+WHERE transaction_revenue IS NOT NULL
+GROUP BY 1, 2;
+```
+
+Output from the initial query drove the comparison of `total_transaction_revenue` to `transaction_revenue`, and helped identify that `transaction_revenue` had only 4 rows with non-null values, which turned out to be duplicates of `total_transaction_revenue` and lead to a clean up task to remove `transaction_revenue` as a column.
+
+```sql
+-- Remove transaction_revenue from all_session as it has 4 values that are not null, and
+-- those values match total_transaction_revenue making it duplicate and irrelevant data.
+
+ALTER TABLE all_sessions
+  DROP COLUMN transaction_revenue;
+```
+
+---
+
+```sql
+-- Check for rows that have a value in item_quantity
+
+SELECT item_quantity
+FROM all_sessions
+WHERE item_quantity IS NOT NULL;
+
+--- Result: 0 rows
+
+-- Remove item_quantity column from the dataset
+
+ALTER TABLE all_sessions
+  DROP COLUMN item_quantity;
+```
+
+---
+
+```sql
+-- Select city and country where city is null
+
+SELECT
+    city
+  , country
+  , COUNT (city) AS count_col
+FROM public.all_sessions
+GROUP BY city, country
+ORDER BY city DESC NULLS FIRST;
+
+-- Result: 447 rows, no `NULL` values.
+```
+
+The result did show that there existed quite a few country and city values that should be updated to null.
+
+```SQL
+-- Update city to be null when 'not available in demo dataset'
+
+UPDATE all_sessions
+   SET city = NULL
+WHERE city = 'not available in demo dataset';
+
+-- Result: UPDATE 8302
+```
+
+```SQL
+-- Update country to be null when '(not set)'
+
+UPDATE all_sessions
+   SET country = NULL
+WHERE country = '(not set)';
+
+-- Result: UPDATE 24
+```
+
+---
+
+### Fix Structural Errors
+
+Not fully performed due to time constraint.
+
+### Handle Missing Data
+
+### Filter Out Data Outliers
+
+### Validate Data
+
+### Reconcile table data by adding relationships
+
+```sql
+-- Create unique primary key for each of the five tables in 
+-- order to draw relationships
 
 ALTER TABLE (public.all_sessions)
 ADD COLUMN id SERIAL PRIMARY KEY;
@@ -20,15 +151,22 @@ ADD COLUMN id SERIAL PRIMARY KEY;
 ALTER TABLE (public.sales_by_sku)
 ADD COLUMN id SERIAL PRIMARY KEY;
 
-ALTER TABLE (public.products)
-ADD COLUMN id SERIAL PRIMARY KEY;
-
 ALTER TABLE (public.analytics)
 ADD COLUMN id SERIAL PRIMARY KEY;
 
 ALTER TABLE (public.sales_report)
 ADD COLUMN id SERIAL PRIMARY KEY;
+
+-- SKU appears to be an appropriate primary key
+
+ALTER TABLE (public.products)
+ADD COLUMN id SERIAL PRIMARY KEY;
 ```
+
+---
+---
+
+# Work in Progress
 
 I thought to start initially with the all_sessions table, looking to the visitor id columns.
 
