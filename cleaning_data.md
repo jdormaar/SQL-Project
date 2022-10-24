@@ -1,8 +1,7 @@
 # Cleaning Data
 
-## What issues will you address by cleaning the data?
+## Issues that will be addressed by cleaning the data? (6)
 
-https://towardsdatascience.com/the-ultimate-guide-to-data-cleaning-3969843991d4#b498
 
 - Consistent naming conventions for tables and columns
 - Identify irrelevant and duplicate data for removal
