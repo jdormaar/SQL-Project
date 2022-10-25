@@ -1,12 +1,31 @@
 # What are your risk areas? Identify and describe them.
 ## risks:
-* EXAMPLE OF A POTENTIAL CLEANING RISK: Would deleting the column transaction_revenue result in a loss of data from the all_sessions table:
+EXAMPLES OF POTENTIAL CLEANING RISKS:
+1. RISK: Deletions of empty columns.
+---
+2. RISK: Would deleting the column transaction_revenue result in a loss of data from the all_sessions table:
+---
 
 
 
 # QA Process:
 Describe your QA process and include the SQL queries used to execute it.
-1. Risk assessment for transaction_revenue data deletion: When the query below was run for an overview of potentially relevant data towards analyzing a geospacial relationship with transaction revenue data:
+
+---
+
+1. Probably the easiest example of QA validation: Deletion of empty column.  While sequentially checking tables for data issues:
+```sql
+SELECT search_keyword FROM all_sessions WHERE search_keyword IS NOT NULL
+```
+This quick investigative query returned no data, the quick validation check used to confirm the absence of an unnoticed human entry error:
+```sql
+SELECT search_keyword FROM all_sessions WHERE search_keyword IS NULL
+```
+responded as expected with all 15134 rows from the all_sessions table represented as a null value, confirming the column was safe to be deleted.
+
+---
+
+2. Risk assessment for transaction_revenue data deletion: When the query below was run for an overview of potentially relevant data towards analyzing a geospacial relationship with transaction revenue data:
 ```sql
 SELECT
     city
@@ -31,3 +50,4 @@ GROUP BY 1, 2;
 ```
 This query proves the redundancy of the column data within transaction_revenue by calling up all the non-null values along with their associated total_transaction_revenue values.  Since the output of this query returned only four unique transaction_revenue values, next to all four numerically equivalent values in the adjacent total_transaction_revenue column, we knew we could not possibly derive any additional information from those four transaction_revenue values which were not already preserved within the total_transaction_revenue column values.  The transaction_revenue column data can therefore be safely deleted from the all_sessions data table.
 
+---
